@@ -29,7 +29,10 @@ void rb_node_init(struct rb_node *node)
 	node->rb_parent = node->rb_left = node->rb_right = NULL;
 }
 
-void rb_root_init(struct rb_root *root) { root->rb_node = NULL; }
+void rb_root_init(struct rb_root *root)
+{
+	root->rb_node = NULL;
+}
 
 void __rb_rotate_left(struct rb_node *node, struct rb_root *root)
 {
@@ -135,8 +138,8 @@ void rb_insert_color(struct rb_node *node, struct rb_root *root)
 	root->rb_node->color = RB_BLACK;
 }
 
-void rb_link_node(
-	struct rb_node *node, struct rb_node *parent, struct rb_node **link)
+void rb_link_node(struct rb_node *node, struct rb_node *parent,
+		  struct rb_node **link)
 {
 	node->rb_parent = parent;
 	node->rb_left = node->rb_right = NULL;
@@ -146,47 +149,47 @@ void rb_link_node(
 	*link = node;
 }
 
-#define rb_node_add(root, newnode, compare_fn, duplicate) \
-	do {                                                  \
-		int __hr = 0;                                     \
-		struct rb_node *__duplicate = NULL;               \
-		struct rb_node **__link = &((root)->rb_node);     \
-		struct rb_node *__parent = NULL;                  \
-		while (__link[0]) {                               \
-			__parent = __link[0];                         \
-			__hr = (compare_fn)((newnode), __parent);     \
-			if (__hr == 0) {                              \
-				__duplicate = __parent;                   \
-				break;                                    \
-			} else if (__hr < 0) {                        \
-				__link = &(__link[0]->rb_left);           \
-			} else {                                      \
-				__link = &(__link[0]->rb_right);          \
-			}                                             \
-		}                                                 \
-		(duplicate) = __duplicate;                        \
-		if (__duplicate == NULL) {                        \
-			rb_link_node((newnode), __parent, __link);    \
-			rb_insert_color((newnode), root);             \
-		}                                                 \
+#define rb_node_add(root, newnode, compare_fn, duplicate)          \
+	do {                                                       \
+		int __hr = 0;                                      \
+		struct rb_node *__duplicate = NULL;                \
+		struct rb_node **__link = &((root)->rb_node);      \
+		struct rb_node *__parent = NULL;                   \
+		while (__link[0]) {                                \
+			__parent = __link[0];                      \
+			__hr = (compare_fn)((newnode), __parent);  \
+			if (__hr == 0) {                           \
+				__duplicate = __parent;            \
+				break;                             \
+			} else if (__hr < 0) {                     \
+				__link = &(__link[0]->rb_left);    \
+			} else {                                   \
+				__link = &(__link[0]->rb_right);   \
+			}                                          \
+		}                                                  \
+		(duplicate) = __duplicate;                         \
+		if (__duplicate == NULL) {                         \
+			rb_link_node((newnode), __parent, __link); \
+			rb_insert_color((newnode), root);          \
+		}                                                  \
 	} while (0)
 
-#define rb_node_find(root, what, compare_fn, duplicate) \
-	do {                                                \
-		struct rb_node *__p = (root)->rb_node;          \
-		(duplicate) = NULL;                             \
-		int __hr = 0;                                   \
-		while (__p) {                                   \
-			__hr = (compare_fn)((what), __p);           \
-			if (__hr == 0) {                            \
-				(duplicate) = __p;                      \
-				break;                                  \
-			} else if (__hr < 0) {                      \
-				__p = __p->rb_left;                     \
-			} else {                                    \
-				__p = __p->rb_right;                    \
-			}                                           \
-		}                                               \
+#define rb_node_find(root, what, compare_fn, duplicate)   \
+	do {                                              \
+		struct rb_node *__p = (root)->rb_node;    \
+		(duplicate) = NULL;                       \
+		int __hr = 0;                             \
+		while (__p) {                             \
+			__hr = (compare_fn)((what), __p); \
+			if (__hr == 0) {                  \
+				(duplicate) = __p;        \
+				break;                    \
+			} else if (__hr < 0) {            \
+				__p = __p->rb_left;       \
+			} else {                          \
+				__p = __p->rb_right;      \
+			}                                 \
+		}                                         \
 	} while (0)
 
 // ========================================================================

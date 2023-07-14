@@ -3,7 +3,6 @@
 #include <stdlib.h>
 #include <string.h>
 
-
 // ===========================================================
 // ringbuffer
 // ===========================================================
@@ -17,9 +16,9 @@ struct ringbuf {
 	ilong size;
 };
 
-#define ringbuf_used_size(r)                      \
-	(((r)->in >= (r)->out) ? ((r)->in - (r)->out) \
-						   : ((r)->size - ((r)->out - (r)->in)))
+#define ringbuf_used_size(r)                            \
+	(((r)->in >= (r)->out) ? ((r)->in - (r)->out) : \
+				 ((r)->size - ((r)->out - (r)->in)))
 
 #define ringbuf_free_size(r) ((r)->size - ringbuf_used_size(r) - 1)
 
@@ -98,7 +97,6 @@ ilong ringbuf_read(struct ringbuf *r, char *data, ilong sz)
 	return sz;
 }
 
-
 // ===========================================================
 // test ringbuffer
 // ===========================================================
@@ -124,4 +122,7 @@ void test()
 	}
 }
 
-int main() { test(); }
+int main()
+{
+	test();
+}
